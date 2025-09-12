@@ -8,19 +8,6 @@ public class BuilderController {
 
 
 
-    public void addProject(){
 
-    }
-
-    public void deleteProject(){
-
-    }
-
-    public void updateProject(){
-
-    }
-    public void assignProjectManager(){
-
-    }
 
 }
