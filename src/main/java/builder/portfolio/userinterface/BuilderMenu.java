@@ -1,5 +1,6 @@
 package builder.portfolio.userinterface;
 
+import builder.portfolio.controller.BuilderController;
 import builder.portfolio.util.InputUtil;
 
 import java.util.Scanner;
@@ -16,7 +17,13 @@ public class BuilderMenu {
         System.out.println("6. View Gantt Chart");
         String choice = InputUtil.readString("Enter choice: ");
         while(true){
-//            case "1":
+            switch (choice) {
+                case "1":
+                    BuilderController.createProject();
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
 
         }
     }

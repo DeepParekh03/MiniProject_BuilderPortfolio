@@ -1,5 +1,8 @@
 package builder.portfolio.util;
 
+import java.util.List;
+import java.util.function.Function;
+
 public class ValidatorUtil {
     public static boolean isValidEmail(String email) {
         return email != null && email.matches("^[A-Za-z0-9+_.-]+@(.+)$");
@@ -10,6 +13,27 @@ public class ValidatorUtil {
     }
 
     public static boolean isValidName(String name) {
-        return name.matches("^[A-Z]+('?([a-zA-Z]*)?)$");
+        return name != null && name.matches("^[A-Za-z ]+$");
+
+    }
+
+
+    public static <T> long validateId(String prompt, List<T> items, Function<T, Long> idMapper) {
+
+        List<Long> validIds = items.stream()
+                .map(idMapper)
+                .toList();
+
+        long selectedId;
+        while (true) {
+            selectedId = InputUtil.readLong(prompt);
+
+            if (validIds.contains(selectedId)) {
+                break;
+            } else {
+                System.out.println("Error: No such available ID. Please try again.");
+            }
+        }
+        return selectedId;
     }
 }

@@ -16,9 +16,9 @@ public class Project {
     private Status status;
     private double plannedBudget;
     private double actualSpend;
-    private User builder;
-    private User projectManager;
-    private User client;
+    private long builderId;
+    private long projectManagerId;
+    private long clientId;
     private List<Document> document;
-    private List<Timeline> timeline;
+    private List<Task> timeline;
 }

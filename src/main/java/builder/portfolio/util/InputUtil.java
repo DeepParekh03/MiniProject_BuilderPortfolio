@@ -15,12 +15,12 @@ public class InputUtil {
         return Integer.parseInt(input.nextLine().trim());
     }
 
-    private static long readLong(String prompt){
+    public static long readLong(String prompt){
         System.out.println(prompt);
         return Long.parseLong(input.nextLine().trim());
     }
 
-    private static float readFloat(String prompt){
+    public static float readFloat(String prompt){
         System.out.println(prompt);
         return Float.parseFloat(input.next().trim());
     }
