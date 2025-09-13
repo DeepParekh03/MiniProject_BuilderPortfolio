@@ -17,7 +17,7 @@ public class BuilderService implements IBuilderService {
     private final BuilderRepository repository = new BuilderRepository();
 
     @Override
-    public Project saveProject(String projectName,
+    public Project createProjectService(String projectName,
                                double plannedBudget,
                                double actualSpend,
                                long manager,
@@ -33,7 +33,7 @@ public class BuilderService implements IBuilderService {
         project.setClientId(client);
         project.setStatus(Status.UPCOMING);
 
-        Project savedProject = repository.saveProject(project);
+        Project savedProject = repository.createProjectRepository(project);
 
         List<Task> tasks = new ArrayList<>();
         for (int i = 1; i <= numberOfTasks; i++) {
@@ -52,17 +52,39 @@ public class BuilderService implements IBuilderService {
         return savedProject;
     }
 
+
     @Override
-    public Document uploadDocumentDetails(String documentName, String documentPath) {
+    public Document uploadDocumentDetails(long projectId,String documentName, String documentPath) {
         Document document=new Document();
-        document.setProjectId(SessionManager.getCurrentProject().getProjectId());
+        document.setProjectId(projectId);
         document.setDocumentName(documentName);
         document.setUploadedBy(SessionManager.getCurrentUser());
         document.setFilePath(documentPath);
-        document.setType(documentPath.substring(documentPath.length()-2));
+        document.setType(documentPath.substring(documentPath.length()-3));
 
         Document savedDocument=repository.uploadDocumentDB(document);
-        return document;
+        return savedDocument;
+    }
+
+    @Override
+    public Project updateProjectService(long projectId, String projectName, double plannedBudget) {
+
+        Project project = new Project();
+        project.setProjectName(projectName);
+        project.setPlannedBudget(plannedBudget);
+        project.setProjectId(projectId);
+
+        Project updateProject = repository.updateProjectRepository(project);
+        return updateProject;
+    }
+
+    @Override
+    public boolean deleteProjectService(long projectId) {
+        Project project = new Project();
+        project.setProjectId(projectId);
+
+        boolean deleteProject = repository.deleteProjectRepository(project);
+        return deleteProject;
     }
 
     // Other methods like getAvailableManagers(), getAvailableClients() can stay here

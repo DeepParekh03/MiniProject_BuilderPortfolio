@@ -17,6 +17,14 @@ public class ValidatorUtil {
 
     }
 
+    public static boolean isValidDocumentPath(String path) {
+        if (path == null || path.trim().isEmpty()) {
+            return false;
+        }
+        path = path.toLowerCase();
+        return path.endsWith(".pdf") || path.endsWith(".png") || path.endsWith(".jpg");
+    }
+
 
     public static <T> long validateId(String prompt, List<T> items, Function<T, Long> idMapper) {
 

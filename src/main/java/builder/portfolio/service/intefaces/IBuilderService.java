@@ -5,12 +5,15 @@ import builder.portfolio.model.Project;
 import builder.portfolio.model.User;
 
 public interface IBuilderService {
-    Project saveProject(String projectName,
+    Project createProjectService(String projectName,
                         double plannedBudget,
                         double actualSpend,
                         long manager,
                         long client,
                         int numberOfTasks);
 
-    Document uploadDocumentDetails(String documentName,String documentPath);
+    Document uploadDocumentDetails(long projectId,String documentName,String documentPath);
+
+    Project updateProjectService(long projectId,String pojectName,double plannedBudget);
+    boolean deleteProjectService(long projectId);
 }

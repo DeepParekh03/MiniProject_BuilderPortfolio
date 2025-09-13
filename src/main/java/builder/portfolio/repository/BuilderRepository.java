@@ -17,7 +17,7 @@ import java.util.List;
 public class BuilderRepository {
 
 
-    public Project saveProject(Project project) {
+    public Project createProjectRepository(Project project) {
         String sql = "INSERT INTO project (project_name, status, planned_budget, actual_spend, builder_id, manager_id, client_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING project_id";
         try (Connection connection = DBUtil.getConnection();
@@ -41,6 +41,59 @@ public class BuilderRepository {
             sqlException.printStackTrace();
             return null;
         }
+    }
+
+    public Project updateProjectRepository(Project project){
+        String sql = "UPDATE project SET project_name = ?, planned_budget = ? WHERE project_id = ? RETURNING project_id";
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setString(1, project.getProjectName());
+            ps.setDouble(2, project.getPlannedBudget());
+            ps.setLong(3, project.getProjectId());
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                project.setProjectId(rs.getLong("project_id"));
+            }
+            return project;
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+            return null;
+        }
+    }
+
+    public boolean deleteProjectRepository(Project project){
+        try (Connection connection = DBUtil.getConnection()) {
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement ps1 = connection.prepareStatement("DELETE FROM document WHERE project_id = ?");
+                 PreparedStatement ps2 = connection.prepareStatement("DELETE FROM task WHERE project_id = ?");
+                 PreparedStatement ps3 = connection.prepareStatement("DELETE FROM project WHERE project_id = ?");
+                 ) {
+
+                ps1.setLong(1, project.getProjectId());
+                ps1.executeUpdate();
+
+                ps2.setLong(1, project.getProjectId());
+                ps2.executeUpdate();
+
+                ps3.setLong(1, project.getProjectId());
+                ps3.executeUpdate();
+
+                int rows = ps3.executeUpdate();
+
+                connection.commit();
+                return true;
+            } catch (SQLException sqlException) {
+                connection.rollback();
+                throw sqlException;
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return false;
     }
 
     public Document uploadDocumentDB(Document document){
@@ -91,66 +144,4 @@ public class BuilderRepository {
         }
     }
 
-
-    public static List<Project> getAllProjectsBuilder(User user){
-        List<Project> projectList=new ArrayList<>();
-
-        String sql="SELECT * FROM project WHERE builder_id=?";
-        try (Connection connection = DBUtil.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            ps.setLong(1, user.getUserId());
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Project project = new Project();
-
-                project.setProjectId(rs.getLong("project_id"));
-                project.setProjectName(rs.getString("project_name"));
-                project.setStatus(Status.valueOf(rs.getString("status")));
-                project.setPlannedBudget(rs.getDouble("planned_budget"));
-                project.setActualSpend(rs.getDouble("actual_spend"));
-                project.setBuilderId(rs.getLong("builder_id"));
-                project.setProjectManagerId(rs.getLong("manager_id"));
-                project.setClientId(rs.getLong("client_id"));
-
-                project.setDocument(null);
-                project.setTimeline(null);
-
-                projectList.add(project);
-
-            }
-            return projectList;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static List<User> getAllData(String role) {
-        List<User> userList = new ArrayList<>();
-        String sql = "SELECT * FROM users WHERE role=?";
-
-        try (Connection connection = DBUtil.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-
-            ps.setString(1, role);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) { // use while to fetch all rows
-                User user = new User();
-                user.setUserId(rs.getLong("user_id"));        // match your column name
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
-                user.setUserName(rs.getString("username"));
-                user.setRole(UserRole.valueOf(rs.getString("role"))); // convert string to enum
-                userList.add(user);
-            }
-            return userList;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }
