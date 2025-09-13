@@ -4,6 +4,7 @@ import builder.portfolio.model.Document;
 import builder.portfolio.model.Task;
 import builder.portfolio.repository.CommonRepository;
 import builder.portfolio.service.implementations.BuilderService;
+import builder.portfolio.service.implementations.ProjectManagrService;
 import builder.portfolio.util.InputUtil;
 import builder.portfolio.util.SessionManager;
 
@@ -15,7 +16,7 @@ import static builder.portfolio.util.ValidatorUtil.isValidDocumentPath;
 public class ProjectManagerController {
     BuilderController builderController=new BuilderController();
     BuilderService builderService=new BuilderService();
-
+    ProjectManagrService projectManagrService=new ProjectManagrService();
 
     public  void viewProjects(){
         long projectId =builderController.availableProjects();
@@ -29,6 +30,30 @@ public class ProjectManagerController {
                     + " Last Updated At: " + task.getUpdatedAt());
         });
         DashboardController.showDashboard(SessionManager.getCurrentUser());
+    }
+
+    public void updateProjectStatus(){
+        long projectId=builderController.availableProjects();
+        int numberOfTasksCompleted=InputUtil.readInt("Enter number of tasks completed: ");
+        int totalTaskUpdate= projectManagrService.updateProjectStatus(projectId,numberOfTasksCompleted);
+        if (totalTaskUpdate == 0) {
+            System.out.println("No pending tasks available for this project.");
+        } else {
+            System.out.println(totalTaskUpdate + " tasks marked as COMPLETED.");
+            DashboardController.showDashboard(SessionManager.getCurrentUser());
+        }
+    }
+
+    public  void updateProjectActualSpend(){
+        long projectId=builderController.availableProjects();
+        double actualSpend=InputUtil.readDouble("Enter amount spend: ");
+        double moneySpend=projectManagrService.updateActualSpend(projectId,actualSpend);
+        if(moneySpend!=0){
+            System.out.println("Updated Project Actual Spend: "+moneySpend);
+            DashboardController.showDashboard(SessionManager.getCurrentUser());
+        }else{
+            System.out.println("Erro updating");
+        }
     }
 
 

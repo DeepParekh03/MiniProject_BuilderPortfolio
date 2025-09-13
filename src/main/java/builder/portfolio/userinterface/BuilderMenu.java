@@ -2,6 +2,7 @@ package builder.portfolio.userinterface;
 
 import builder.portfolio.controller.BuilderController;
 import builder.portfolio.util.InputUtil;
+import builder.portfolio.util.SessionManager;
 
 import java.util.Scanner;
 
@@ -17,6 +18,7 @@ public class BuilderMenu {
         System.out.println("5. Upload Project Documents");
         System.out.println("6. View Portfolio");
         System.out.println("7. View Gantt Chart");
+        System.out.println("0. LogOut");
         String choice = InputUtil.readString("Enter choice: ");
         while(true){
             switch (choice) {
@@ -30,6 +32,9 @@ public class BuilderMenu {
                     builderController.updateProjectManager();
                 case "5":
                     builderController.uploadDocuments();
+                case "0":
+                    SessionManager.setCurrentProject(null);
+                    MainMenu.show();
                 default:
                     System.out.println("Invalid choice");
             }
