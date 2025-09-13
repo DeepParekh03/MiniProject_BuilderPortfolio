@@ -22,26 +22,8 @@ public class BuilderController {
     public void createProject(){
         String projectName= InputUtil.readString("Enter Project Name: ");
         double plannedBudget= InputUtil.readDouble("Enter Estimate budget: ");
-        System.out.println("Available Managers: ");
-        List<User> managerList= CommonRepository.getAllUsers(UserRole.PROJECT_MANAGER);
-        managerList.forEach(user ->
-                System.out.println("ID: " + user.getUserId() + ", Name: " + user.getUserName())
-        );
-        long managerId = ValidatorUtil.validateId(
-                "Select manager ID: ",
-                managerList,
-                User::getUserId
-        );
-        System.out.println("Available Clients: ");
-        List<User> clientList= CommonRepository.getAllUsers(UserRole.CLIENT);
-        clientList.forEach(user ->
-                System.out.println("ID: " + user.getUserId() + ", Name: " + user.getUserName())
-        );
-        long clientId = ValidatorUtil.validateId(
-                "Select client ID: ",
-                clientList,
-                User::getUserId
-        );
+        long managerId=availableProjectManagers();
+        long clientId=availableClients();
         int numberOfTasks=InputUtil.readInt("Enter total no. of phases: ");
         Project project=new Project();
         project=builderService.createProjectService(projectName,plannedBudget,0,managerId,clientId,numberOfTasks);
@@ -82,6 +64,21 @@ public class BuilderController {
         }
     }
 
+    public void updateProjectManager(){
+        long projectId=availableProjects();
+        long projectManagerId=availableProjectManagers();
+
+
+        boolean updateStatus=builderService.updateProjectManagerService(projectId,projectManagerId);
+        if(updateStatus){
+            System.out.println("Manager Updated successfully");
+            DashboardController.showDashboard(SessionManager.getCurrentUser());
+        }
+        else{
+            System.out.println("Error updating manager");
+        }
+    }
+
     public void uploadDocuments(){
         long projectId =availableProjects();
         String documentName= InputUtil.readString("Enter Document Name: ");
@@ -101,17 +98,47 @@ public class BuilderController {
         }
     }
 
+    public long availableClients(){
+        System.out.println("Available Clients: ");
+        List<User> clientList= CommonRepository.getAllUsers(UserRole.CLIENT);
+        clientList.forEach(user ->
+                System.out.println("ID: " + user.getUserId() + ", Name: " + user.getUserName())
+        );
+        long clientId = ValidatorUtil.validateId(
+                "Select client ID: ",
+                clientList,
+                User::getUserId
+        );
+        return clientId;
+    }
+
+    public long availableProjectManagers(){
+        System.out.println("Available Managers: ");
+        List<User> managerList= CommonRepository.getAllUsers(UserRole.PROJECT_MANAGER);
+        managerList.forEach(user ->
+                System.out.println("ID: " + user.getUserId() + ", Name: " + user.getUserName())
+        );
+        long managerId = ValidatorUtil.validateId(
+                "Select manager ID: ",
+                managerList,
+                User::getUserId
+        );
+        return  managerId;
+    }
 
     public long availableProjects(){
         System.out.println("Available Projects: ");
         List<Project> projectList= CommonRepository.getAllProjects(SessionManager.getCurrentUser());
         projectList.forEach(project ->
                 System.out.println("Project ID: " + project.getProjectId()
-                        + ", Project Name: " + project.getProjectName())
+                        + ", Project Name: " + project.getProjectName()
+                        + ", Current Project Manager ID: " + project.getProjectManagerId())
         );
         long projectId=InputUtil.readLong("Select Project Id: ");
 
         return projectId;
     }
+
+
 
 }

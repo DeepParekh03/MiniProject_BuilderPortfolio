@@ -1,11 +1,7 @@
 package builder.portfolio.model;
 
-
 import lombok.*;
-
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,10 +10,11 @@ import java.util.List;
 @ToString
 
 public class Task {
-
     private long taskId;
     private long projectId;
     private String taskName;
     private String status;
+    private Date createdAt;
+    private Date updatedAt;
 }
 

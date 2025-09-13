@@ -96,6 +96,25 @@ public class BuilderRepository {
         return false;
     }
 
+    public boolean updateProjectManagerRepository(Project project) {
+        String sql = "UPDATE project SET manager_id = ? WHERE project_id = ?";
+
+        try (Connection connection = DBUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setLong(1, project.getProjectManagerId());
+            ps.setLong(2, project.getProjectId());
+
+            int updatedRows = ps.executeUpdate();
+            return updatedRows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
     public Document uploadDocumentDB(Document document){
         String sql="INSERT INTO DOCUMENT (project_id,document_name, document_url, created_at, document_type, uploaded_by) VALUES (?, ?, ?, ?, ?, ?) RETURNING document_id";
         try (Connection connection = DBUtil.getConnection();

@@ -26,6 +26,8 @@ public class BuilderMenu {
                     builderController.updateProject();
                 case "3":
                     builderController.deleteProject();
+                case "4":
+                    builderController.updateProjectManager();
                 case "5":
                     builderController.uploadDocuments();
                 default:

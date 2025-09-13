@@ -52,9 +52,18 @@ public class BuilderService implements IBuilderService {
         return savedProject;
     }
 
+    @Override
+    public boolean updateProjectManagerService(long projectId, long projectManagerId) {
+        Project project=new Project();
+        project.setProjectId(projectId);
+        project.setProjectManagerId(projectManagerId);
+
+        boolean updatedProjectManger=repository.updateProjectManagerRepository(project);
+        return updatedProjectManger;
+    }
 
     @Override
-    public Document uploadDocumentDetails(long projectId,String documentName, String documentPath) {
+    public Document uploadDocumentDetails(long projectId, String documentName, String documentPath) {
         Document document=new Document();
         document.setProjectId(projectId);
         document.setDocumentName(documentName);

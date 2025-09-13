@@ -15,5 +15,6 @@ public interface IBuilderService {
     Document uploadDocumentDetails(long projectId,String documentName,String documentPath);
 
     Project updateProjectService(long projectId,String pojectName,double plannedBudget);
+    boolean updateProjectManagerService(long projectId,long projectManagerId);
     boolean deleteProjectService(long projectId);
 }
