@@ -1,11 +1,13 @@
 package builder.portfolio.service.implementations;
 
+import builder.portfolio.model.Document;
 import builder.portfolio.model.Project;
 import builder.portfolio.model.Task;
 import builder.portfolio.model.User;
 import builder.portfolio.model.enums.Status;
 import builder.portfolio.repository.BuilderRepository;
 import builder.portfolio.service.intefaces.IBuilderService;
+import builder.portfolio.util.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,6 @@ public class BuilderService implements IBuilderService {
     public Project saveProject(String projectName,
                                double plannedBudget,
                                double actualSpend,
-                               long builder,
                                long manager,
                                long client,
                                int numberOfTasks) {
@@ -27,7 +28,7 @@ public class BuilderService implements IBuilderService {
         project.setProjectName(projectName);
         project.setPlannedBudget(plannedBudget);
         project.setActualSpend(0);
-        project.setBuilderId(builder);
+        project.setBuilderId(SessionManager.getCurrentUser().getUserId());
         project.setProjectManagerId(manager);
         project.setClientId(client);
         project.setStatus(Status.UPCOMING);
@@ -49,6 +50,19 @@ public class BuilderService implements IBuilderService {
         }
 
         return savedProject;
+    }
+
+    @Override
+    public Document uploadDocumentDetails(String documentName, String documentPath) {
+        Document document=new Document();
+        document.setProjectId(SessionManager.getCurrentProject().getProjectId());
+        document.setDocumentName(documentName);
+        document.setUploadedBy(SessionManager.getCurrentUser());
+        document.setFilePath(documentPath);
+        document.setType(documentPath.substring(documentPath.length()-2));
+
+        Document savedDocument=repository.uploadDocumentDB(document);
+        return document;
     }
 
     // Other methods like getAvailableManagers(), getAvailableClients() can stay here

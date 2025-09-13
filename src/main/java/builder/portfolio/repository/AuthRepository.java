@@ -1,13 +1,11 @@
 package builder.portfolio.repository;
 
+import builder.portfolio.exceptions.InvalidUserFormatException;
 import builder.portfolio.model.User;
 import builder.portfolio.model.enums.UserRole;
 import builder.portfolio.util.DBUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 
 public class AuthRepository {
 
@@ -23,9 +21,10 @@ public class AuthRepository {
             if (rs.next()) {
                 return mapUserFromResultSet(rs);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException | InvalidUserFormatException exception) {
+            exception.printStackTrace();
         }
+
         return null;
     }
 
@@ -48,19 +47,32 @@ public class AuthRepository {
                 return user;
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
         return null;
     }
 
-    private User mapUserFromResultSet(ResultSet rs) throws Exception {
+    private User mapUserFromResultSet(ResultSet rs) throws InvalidUserFormatException, SQLException {
+        long userId = rs.getLong("user_id");
+        String username = rs.getString("username");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
+        String roleStr = rs.getString("role");
+
+        if (username == null || email == null || password == null || roleStr == null) {
+            throw new InvalidUserFormatException("Invalid User Format from Postgres");
+        }
+
+
         User user = new User();
-        user.setUserId(rs.getLong("userId"));
-        user.setUserName(rs.getString("userName"));
-        user.setEmail(rs.getString("email"));
-        user.setPassword(rs.getString("password"));
-        user.setRole(UserRole.valueOf(rs.getString("role")));
+        user.setUserId(userId);
+        user.setUserName(username);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setRole(UserRole.valueOf(roleStr));
+
         return user;
     }
+
 }

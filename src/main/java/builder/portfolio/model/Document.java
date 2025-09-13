@@ -9,7 +9,8 @@ import lombok.*;
 @ToString
 public class Document {
     private long documentId;
-    private Project project;
+    private long projectId;
+    private String documentName;
     private String type;
     private String filePath;
     private User uploadedBy;

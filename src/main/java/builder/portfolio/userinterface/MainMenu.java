@@ -21,13 +21,13 @@ public class MainMenu {
             String choice = InputUtil.readString("Enter choice: ");
 
             switch (choice) {
-                case "1" -> authController.handleLogin();
-                case "2" -> authController.handleRegister();
-                case "0" -> {
+                case "1" : authController.handleLogin();
+                case "2" : authController.handleRegister();
+                case "0" : {
                     System.out.println("Exiting... Goodbye!");
                     System.exit(0);
                 }
-                default -> System.out.println("Invalid choice, try again.");
+                default : System.out.println("Invalid choice, try again.");
             }
         }
 

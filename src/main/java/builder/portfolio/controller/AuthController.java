@@ -4,6 +4,7 @@ import builder.portfolio.model.User;
 import builder.portfolio.model.enums.UserRole;
 import builder.portfolio.service.implementations.AuthService;
 import builder.portfolio.util.InputUtil;
+import builder.portfolio.util.SessionManager;
 
 public class AuthController {
 
@@ -12,15 +13,16 @@ public class AuthController {
     public User handleLogin() {
         String email = InputUtil.readString("Enter Email: ");
         String password = InputUtil.readString("Enter Password: ");
-        User user = authService.login(email, password);
+        User loggedUser = authService.login(email, password);
 
-        if (user == null) {
+        if (loggedUser == null) {
             System.out.println("Login failed. Invalid credentials.");
             return null;
         }
-
-        System.out.println("Login successful! Welcome, " + user.getUserName() + ".");
-        return user;
+        SessionManager.setCurrentUser(loggedUser);
+        System.out.println("Login successful! Welcome, " + loggedUser.getUserName() + ".");
+        DashboardController.showDashboard(loggedUser);
+        return loggedUser;
     }
 
     public User handleRegister() {
@@ -33,6 +35,7 @@ public class AuthController {
         User registeredUser = authService.register(name, email, password, role);
 
         if (registeredUser != null) {
+            SessionManager.setCurrentUser(registeredUser);
             System.out.println("==== User Registered Successfully ====");
             System.out.println("Assigned User ID: " + registeredUser.getUserId());
             DashboardController.showDashboard(registeredUser);

@@ -13,14 +13,17 @@ public class BuilderMenu {
         System.out.println("2. Update Project");
         System.out.println("3. Delete Project");
         System.out.println("4. Assign Project Manager");
-        System.out.println("5. View Portfolio");
-        System.out.println("6. View Gantt Chart");
+        System.out.println("5. Upload Project Documents");
+        System.out.println("6. View Portfolio");
+        System.out.println("7. View Gantt Chart");
         String choice = InputUtil.readString("Enter choice: ");
         while(true){
             switch (choice) {
                 case "1":
                     BuilderController.createProject();
                     break;
+                case "2":
+                    BuilderController.uploadDocuments();
                 default:
                     System.out.println("Invalid choice");
             }
