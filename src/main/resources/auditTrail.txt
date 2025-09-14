@@ -81,3 +81,71 @@ User Logged In,1,Deep,BUILDER
 Create Project,1,Deep,BUILDER
 User Logged In,1,Deep,BUILDER
 Documents Saved Successfully,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Registered,9,test,CLIENT
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+Update Project,1,Deep,BUILDER
+Delete Project,1,Deep,BUILDER
+Updated Project Manager,1,Deep,BUILDER
+Documents Saved Successfully,1,Deep,BUILDER
+User Logged In,2,Nik,PROJECT_MANAGER
+Updated Project Status,2,Nik,PROJECT_MANAGER
+Updated Project Spend,2,Nik,PROJECT_MANAGER
+Document Saved,2,Nik,PROJECT_MANAGER
+User Logged In,3,Krrish,CLIENT
+View Projects,3,Krrish,CLIENT
+Budget Tracked,3,Krrish,CLIENT
+Viewed Saved Documents,3,Krrish,CLIENT
+User Logged In,7,Admin,ADMIN
+User Logged In,7,Admin,ADMIN
+User Registered,10,Shubh,BUILDER
+User Registered,11,Shubh,BUILDER
+Create Project,11,Shubh,BUILDER
+Update Project,11,Shubh,BUILDER
+Updated Project Manager,11,Shubh,BUILDER
+User Registered,12,james,PROJECT_MANAGER
+User Logged In,10,Shubh,BUILDER
+Create Project,10,Shubh,BUILDER
+Update Project,10,Shubh,BUILDER
+Updated Project Manager,10,Shubh,BUILDER
+Documents Saved Successfully,10,Shubh,BUILDER
+User Logged In,12,james,PROJECT_MANAGER
+User Registered,13,shubh,BUILDER
+Create Project,13,shubh,BUILDER
+Documents Saved Successfully,13,shubh,BUILDER
+User Registered,14,jagan,PROJECT_MANAGER
+User Logged In,10,Shubh,BUILDER
+User Registered,15,smith,BUILDER
+Create Project,15,smith,BUILDER
+User Registered,16,jhenil,PROJECT_MANAGER
+User Logged In,15,smith,BUILDER
+Updated Project Manager,15,smith,BUILDER
+Documents Saved Successfully,15,smith,BUILDER
+User Logged In,16,jhenil,PROJECT_MANAGER
+Updated Project Status,16,jhenil,PROJECT_MANAGER
+Updated Project Spend,16,jhenil,PROJECT_MANAGER
+Document Saved,16,jhenil,PROJECT_MANAGER
+User Logged In,10,Shubh,BUILDER
+User Registered,17,deep,BUILDER
+User Registered,18,nik,PROJECT_MANAGER
+User Registered,19,krrish,CLIENT
+User Registered,20,yash,BUILDER
+Create Project,20,yash,BUILDER
+User Logged In,18,nik,PROJECT_MANAGER
+Updated Project Status,18,nik,PROJECT_MANAGER
+Updated Project Spend,18,nik,PROJECT_MANAGER
+Document Saved,18,nik,PROJECT_MANAGER
+User Logged In,20,yash,BUILDER
+Documents Saved Successfully,20,yash,BUILDER
+User Registered,21,siddh,CLIENT
+User Logged In,20,yash,BUILDER
+Create Project,20,yash,BUILDER
+User Logged In,21,siddh,CLIENT
+View Projects,21,siddh,CLIENT
+Budget Tracked,21,siddh,CLIENT
+Viewed Saved Documents,21,siddh,CLIENT
+User Registered,22,admin,ADMIN

@@ -1,8 +1,10 @@
 package builder.portfolio.userinterface;
 
 import builder.portfolio.controller.AuthController;
+import builder.portfolio.controller.DashboardController;
 import builder.portfolio.util.DBUtil;
 import builder.portfolio.util.InputUtil;
+import builder.portfolio.util.SessionManager;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -28,6 +30,8 @@ public class MainMenu {
                     System.exit(0);
                 }
                 default : System.out.println("Invalid choice, try again.");
+                DashboardController.showDashboard(SessionManager.getCurrentUser());
+
             }
         }
 

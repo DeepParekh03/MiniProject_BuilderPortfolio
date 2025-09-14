@@ -31,6 +31,8 @@ public class ProjectManagerMenu {
                     MainMenu.show();
                 default:
                     System.out.println("Invalid choice");
+                    DashboardController.showDashboard(SessionManager.getCurrentUser());
+
             }
 
         }

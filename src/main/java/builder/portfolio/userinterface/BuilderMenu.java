@@ -1,6 +1,7 @@
 package builder.portfolio.userinterface;
 
 import builder.portfolio.controller.BuilderController;
+import builder.portfolio.controller.DashboardController;
 import builder.portfolio.util.InputUtil;
 import builder.portfolio.util.SessionManager;
 
@@ -41,6 +42,8 @@ public class BuilderMenu {
                     MainMenu.show();
                 default:
                     System.out.println("Invalid choice");
+                    DashboardController.showDashboard(SessionManager.getCurrentUser());
+
             }
 
         }

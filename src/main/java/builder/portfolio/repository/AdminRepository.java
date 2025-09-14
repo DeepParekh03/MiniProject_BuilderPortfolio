@@ -9,8 +9,8 @@ import java.sql.SQLException;
 
 @Slf4j
 public class AdminRepository {
-    public boolean deleteProjectManager(long userId){
-        String sql="DELETE FROM users WHERE user_id=?";
+    public boolean deleteUser(long userId){
+        String sql="DELETE FROM users WHERE user_id=? ";
 
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {

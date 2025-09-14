@@ -31,11 +31,14 @@ public class BuilderController {
         double plannedBudget= InputUtil.readDouble("Enter Estimate budget: ");
         long managerId= commonRepository.availableProjectManagers();;
         long clientId=commonRepository.availableClients();
-        LocalDate endDate = InputUtil.readDate("Enter the estimated Completion Date (dd-MM-yyyy): ");
-        boolean validDate=ValidatorUtil.isValidDate(endDate);
-        while (true){
-            if(validDate){break;}
-            else {System.out.println("Invalid Date try again");}
+        LocalDate endDate;
+        while (true) {
+            endDate = InputUtil.readDate("Enter the estimated Completion Date (dd-MM-yyyy): ");
+            if (ValidatorUtil.isValidDate(endDate)) {
+                break;
+            } else {
+                System.out.println("Date cannot be in the past. Try again.");
+            }
         }
         int numberOfTasks=InputUtil.readInt("Enter total no. of phases: ");
         Project project=new Project();

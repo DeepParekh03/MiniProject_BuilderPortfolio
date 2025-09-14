@@ -22,21 +22,21 @@ public class AdminService implements IAdminService {
     @Override
     public boolean deleteProjectManager(long userId) {
         boolean deleteStatus=false;
-        deleteStatus=adminRepository.deleteProjectManager(userId);
+        deleteStatus=adminRepository.deleteUser(userId);
         return deleteStatus;
     }
 
     @Override
     public boolean deleteClient(long userId) {
         boolean deleteStatus=false;
-        deleteStatus=adminRepository.deleteProjectManager(userId);
+        deleteStatus=adminRepository.deleteUser(userId);
         return deleteStatus;
     }
 
     @Override
     public boolean deleteBuilder(long userId) {
         boolean deleteStatus=false;
-        deleteStatus=adminRepository.deleteProjectManager(userId);
+        deleteStatus=adminRepository.deleteUser(userId);
         return deleteStatus;
     }
 

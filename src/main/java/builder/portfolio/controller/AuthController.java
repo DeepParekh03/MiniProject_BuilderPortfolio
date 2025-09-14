@@ -4,6 +4,7 @@ import builder.portfolio.model.AuditTrail;
 import builder.portfolio.model.User;
 import builder.portfolio.model.enums.UserRole;
 import builder.portfolio.service.implementations.AuthService;
+import builder.portfolio.userinterface.MainMenu;
 import builder.portfolio.util.FileWriterUtil;
 import builder.portfolio.util.InputUtil;
 import builder.portfolio.util.SessionManager;
@@ -23,16 +24,17 @@ public class AuthController {
 
         if (loggedUser == null) {
             log.info("Login failed. Invalid credentials.");
+            MainMenu.show();
             return null;
+        }else {
+            SessionManager.setCurrentUser(loggedUser);
+            auditTrail = new AuditTrail("User Logged In", SessionManager.getCurrentUser());
+            FileWriterUtil.writeAuditTrail(auditTrail);
+
+            log.info("Login successful! Welcome, " + loggedUser.getUserName() + ".");
+            DashboardController.showDashboard(loggedUser);
+            return loggedUser;
         }
-
-        SessionManager.setCurrentUser(loggedUser);
-        auditTrail=new AuditTrail("User Logged In",SessionManager.getCurrentUser());
-        FileWriterUtil.writeAuditTrail(auditTrail);
-
-        log.info("Login successful! Welcome, " + loggedUser.getUserName() + ".");
-        DashboardController.showDashboard(loggedUser);
-        return loggedUser;
     }
 
     public User handleRegister() {
@@ -61,6 +63,7 @@ public class AuthController {
             DashboardController.showDashboard(registeredUser);
         } else {
             log.info("Registration failed. Please try again.");
+            MainMenu.show();
         }
 
         return registeredUser;

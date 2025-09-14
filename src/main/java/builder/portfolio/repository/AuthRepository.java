@@ -30,27 +30,40 @@ public class AuthRepository {
     }
 
     public User register(User user) {
-        String query = "INSERT INTO users (userName, email, password, role) VALUES (?, ?, ?, ?)";
-        try (Connection connection = DBUtil.getConnection();
-             PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        String checkQuery = "SELECT user_id FROM users WHERE email = ?";
+        String insertQuery = "INSERT INTO users (userName, email, password, role) VALUES (?, ?, ?, ?)";
 
-            ps.setString(1, user.getUserName());
-            ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPassword());
-            ps.setString(4, user.getRole().name());
-            int rowsAffected = ps.executeUpdate();
-
-            if (rowsAffected > 0) {
-                ResultSet rs = ps.getGeneratedKeys();
+        try (Connection connection = DBUtil.getConnection()) {
+            try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
+                checkStmt.setString(1, user.getEmail());
+                ResultSet rs = checkStmt.executeQuery();
                 if (rs.next()) {
-                    user.setUserId(rs.getLong(1)); // capture generated id
+                    log.info("Email already registered.");
+                    return null;
                 }
-                return user;
             }
 
-        } catch (SQLException sqlException) {
-            log.error(sqlException.getMessage());
+            try (PreparedStatement insertStmt = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+                insertStmt.setString(1, user.getUserName());
+                insertStmt.setString(2, user.getEmail());
+                insertStmt.setString(3, user.getPassword());
+                insertStmt.setString(4, user.getRole().name());
+
+                int rowsAffected = insertStmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    ResultSet generatedKeys = insertStmt.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        user.setUserId(generatedKeys.getLong(1));
+                    }
+                    return user;
+                }
+            }
+
+        } catch (SQLException e) {
+            log.error(e.getMessage());
         }
+
         return null;
     }
 
