@@ -1,10 +1,12 @@
 package builder.portfolio.controller;
 
+import builder.portfolio.model.AuditTrail;
 import builder.portfolio.model.Document;
 import builder.portfolio.model.Project;
 import builder.portfolio.repository.CommonRepository;
 import builder.portfolio.service.implementations.BuilderService;
 import builder.portfolio.service.implementations.ClientService;
+import builder.portfolio.util.FileWriterUtil;
 import builder.portfolio.util.SessionManager;
 
 import javax.print.Doc;
@@ -14,13 +16,15 @@ import java.util.List;
 public class ClientController {
     ClientService clientService=new ClientService();
     CommonRepository commonRepository=new CommonRepository();
+    AuditTrail auditTrail=new AuditTrail();
     public void viewOwnedProjects(){
         List<Project> projectList=new ArrayList<>();
         projectList=clientService.viewOwnedProjects(SessionManager.getCurrentUser());
         if(projectList.isEmpty()){
             System.out.println("Unable to Load Projects");
         }else{
-
+            auditTrail=new AuditTrail("View Projects",SessionManager.getCurrentUser());
+            FileWriterUtil.writeAuditTrail(auditTrail);
             projectList.forEach(project ->
                     System.out.println("Project ID: " + project.getProjectId()
                             + ", Project Name: " + project.getProjectName()
@@ -31,16 +35,15 @@ public class ClientController {
         }
     }
 
-//    public void viewUploadedDocs(){
-//        List<Document> documentList;
-//        documentList
-//    }
 
     public void trackBudget(){
         String budgetStatus="";
         long projectId= commonRepository.availableProjects();
         budgetStatus= clientService.trackBudget(projectId);
         if(budgetStatus!=null){
+            auditTrail=new AuditTrail("Budget Tracked",SessionManager.getCurrentUser());
+            FileWriterUtil.writeAuditTrail(auditTrail);
+
             System.out.println("Budget Status of Project: "+budgetStatus);
             DashboardController.showDashboard(SessionManager.getCurrentUser());
         }
@@ -54,6 +57,9 @@ public class ClientController {
             System.out.println("No docs to be shown");
 
         }else{
+            auditTrail=new AuditTrail("Viewed Saved Documents",SessionManager.getCurrentUser());
+            FileWriterUtil.writeAuditTrail(auditTrail);
+
             documentList.forEach(document -> {
                 System.out.println("Document Name: "+document.getDocumentName()
                 +"Document Type: "+document.getType()

@@ -26,7 +26,7 @@ public class ClientMenu {
 //                case "4":
 //                    clientController.viewProjectTimeline();
                 case "0":
-                    SessionManager.setCurrentProject(null);
+                    SessionManager.setCurrentUser(null);
                     MainMenu.show();
                 default:
                     System.out.println("Invalid choice");

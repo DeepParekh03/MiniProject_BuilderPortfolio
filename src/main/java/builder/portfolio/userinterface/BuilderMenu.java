@@ -32,8 +32,10 @@ public class BuilderMenu {
                     builderController.updateProjectManager();
                 case "5":
                     builderController.uploadDocuments();
+                case "6":
+                    builderController.viewPortfolio();
                 case "0":
-                    SessionManager.setCurrentProject(null);
+                    SessionManager.setCurrentUser(null);
                     MainMenu.show();
                 default:
                     System.out.println("Invalid choice");

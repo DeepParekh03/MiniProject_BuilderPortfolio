@@ -1,6 +1,7 @@
 package builder.portfolio.util;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -26,8 +27,12 @@ public class InputUtil {
 
     public static LocalDate readDate(String prompt) {
         System.out.print(prompt);
-        return LocalDate.parse(input.nextLine().trim());
+        String inputDate = input.nextLine().trim();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return LocalDate.parse(inputDate, formatter);
     }
+
 
     public static double readDouble(String prompt) {
         System.out.print(prompt);

@@ -1,0 +1,24 @@
+User Registered,1,deep,BUILDER
+User Registered,2,admin,ADMIN
+User Registered,3,Nik,PROJECT_MANAGER
+User Logged In,3,Nik,PROJECT_MANAGER
+User Logged In,3,Nik,PROJECT_MANAGER
+User Registered,1,Deep,BUILDER
+User Registered,2,Nik,PROJECT_MANAGER
+User Logged In,1,Deep,BUILDER
+User Registered,3,Krrish,CLIENT
+User Registered,4,Yash,BUILDER
+User Registered,5,Siddh,PROJECT_MANAGER
+User Registered,6,Tej,CLIENT
+User Registered,7,Admin,ADMIN
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+User Logged In,2,Nik,PROJECT_MANAGER
+User Logged In,1,Deep,BUILDER

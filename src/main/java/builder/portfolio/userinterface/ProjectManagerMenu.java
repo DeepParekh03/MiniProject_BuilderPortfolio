@@ -27,7 +27,7 @@ public class ProjectManagerMenu {
                 case "4":
                     projectManagerController.uploadDocuments();
                 case "0":
-                    SessionManager.setCurrentProject(null);
+                    SessionManager.setCurrentUser(null);
                     MainMenu.show();
                 default:
                     System.out.println("Invalid choice");

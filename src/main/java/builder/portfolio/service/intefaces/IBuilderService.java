@@ -5,6 +5,7 @@ import builder.portfolio.model.Project;
 import builder.portfolio.model.User;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface IBuilderService {
     Project createProjectService(String projectName,
@@ -15,6 +16,9 @@ public interface IBuilderService {
                         int numberOfTasks);
 
     Document uploadDocumentDetails(long projectId,String documentName,String documentPath);
+    void budgetTrack(long projectId);
+    void projectStatus(long projectId);
+    void getUploadADocs(long projectId);
 
     Project updateProjectService(long projectId,String pojectName,double plannedBudget);
     boolean updateProjectManagerService(long projectId,long projectManagerId);

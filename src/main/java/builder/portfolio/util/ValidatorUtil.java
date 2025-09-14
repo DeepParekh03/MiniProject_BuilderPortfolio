@@ -25,6 +25,11 @@ public class ValidatorUtil {
         return path.endsWith(".pdf") || path.endsWith(".png") || path.endsWith(".jpg");
     }
 
+    public static boolean isValidRole(String role){
+        return role.equalsIgnoreCase("PROJECT_MANAGER") || role.equalsIgnoreCase("BUILDER")
+                || role.equalsIgnoreCase("ADMIN") || role.equalsIgnoreCase("CLIENT");
+    }
+
 
     public static <T> long validateId(String prompt, List<T> items, Function<T, Long> idMapper) {
 

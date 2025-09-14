@@ -3,23 +3,22 @@ package builder.portfolio.repository;
 import builder.portfolio.model.Document;
 import builder.portfolio.model.Project;
 import builder.portfolio.model.Task;
-import builder.portfolio.model.User;
 import builder.portfolio.model.enums.Status;
-import builder.portfolio.model.enums.UserRole;
 import builder.portfolio.util.DBUtil;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class BuilderRepository {
 
-
     public Project createProjectRepository(Project project) {
-        String sql = "INSERT INTO project (project_name, status, planned_budget, actual_spend, builder_id, manager_id, client_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING project_id";
+        String sql = """
+            INSERT INTO project (project_name, status, planned_budget, actual_spend, builder_id, manager_id, client_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING project_id
+            """;
+
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -35,6 +34,12 @@ public class BuilderRepository {
             if (rs.next()) {
                 project.setProjectId(rs.getLong("project_id"));
             }
+
+            String message = "A new project '" + project.getProjectName() + "' has been created and you have been added.";
+            sendNotification(connection, project.getClientId(), message, "CLIENT");
+            sendNotification(connection, project.getProjectManagerId(), message, "PROJECT_MANAGER");
+
+            System.out.println("Notifications sent.");
             return project;
 
         } catch (SQLException sqlException) {
@@ -43,8 +48,12 @@ public class BuilderRepository {
         }
     }
 
-    public Project updateProjectRepository(Project project){
-        String sql = "UPDATE project SET project_name = ?, planned_budget = ? WHERE project_id = ? RETURNING project_id";
+    public Project updateProjectRepository(Project project) {
+        String sql = """
+            UPDATE project SET project_name = ?, planned_budget = ?
+            WHERE project_id = ? RETURNING project_id
+            """;
+
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -56,6 +65,12 @@ public class BuilderRepository {
             if (rs.next()) {
                 project.setProjectId(rs.getLong("project_id"));
             }
+
+            String message = "Project '" + project.getProjectName() + "' has been updated.";
+            sendNotification(connection, project.getClientId(), message, "CLIENT");
+            sendNotification(connection, project.getProjectManagerId(), message, "PROJECT_MANAGER");
+
+            System.out.println("Notifications sent.");
             return project;
 
         } catch (SQLException sqlException) {
@@ -64,14 +79,13 @@ public class BuilderRepository {
         }
     }
 
-    public boolean deleteProjectRepository(Project project){
+    public boolean deleteProjectRepository(Project project) {
         try (Connection connection = DBUtil.getConnection()) {
             connection.setAutoCommit(false);
 
             try (PreparedStatement ps1 = connection.prepareStatement("DELETE FROM document WHERE project_id = ?");
                  PreparedStatement ps2 = connection.prepareStatement("DELETE FROM task WHERE project_id = ?");
-                 PreparedStatement ps3 = connection.prepareStatement("DELETE FROM project WHERE project_id = ?");
-                 ) {
+                 PreparedStatement ps3 = connection.prepareStatement("DELETE FROM project WHERE project_id = ?")) {
 
                 ps1.setLong(1, project.getProjectId());
                 ps1.executeUpdate();
@@ -80,12 +94,20 @@ public class BuilderRepository {
                 ps2.executeUpdate();
 
                 ps3.setLong(1, project.getProjectId());
-                ps3.executeUpdate();
-
                 int rows = ps3.executeUpdate();
 
                 connection.commit();
-                return true;
+
+                if (rows > 0) {
+                    String message = "🗑️ Project '" + project.getProjectName() + "' has been deleted.";
+                    sendNotification(connection, project.getClientId(), message, "CLIENT");
+                    sendNotification(connection, project.getProjectManagerId(), message, "PROJECT_MANAGER");
+
+                    System.out.println("Notifications sent.");
+                    return true;
+                }
+
+                return false;
             } catch (SQLException sqlException) {
                 connection.rollback();
                 throw sqlException;
@@ -106,13 +128,23 @@ public class BuilderRepository {
             ps.setLong(2, project.getProjectId());
 
             int updatedRows = ps.executeUpdate();
-            return updatedRows > 0;
+
+            if (updatedRows > 0) {
+                String message = "Project manager has been assigned/updated for project ID " + project.getProjectId();
+                sendNotification(connection, project.getProjectManagerId(), message, "PROJECT_MANAGER");
+
+                System.out.println("Notifications sent.");
+                return true;
+            }
+
+            return false;
 
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+
 
 
     public Document uploadDocumentDB(Document document){
@@ -162,5 +194,26 @@ public class BuilderRepository {
             return null;
         }
     }
+
+    private void sendNotification(Connection connection, long userId, String message, String roleLabel) {
+        if (userId <= 0) return;
+
+        String insertNotificationSql = "INSERT INTO notification (user_id, message) VALUES (?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(insertNotificationSql)) {
+            ps.setLong(1, userId);
+            ps.setString(2, message);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("NOTIFICATION[" + roleLabel + "]: Sending...");
+        try {
+            Thread.sleep(400);
+        } catch (InterruptedException ignored) {}
+        System.out.println("NOTIFICATION[" + roleLabel + "]: " + message);
+    }
+
 
 }
