@@ -1,5 +1,7 @@
 package builder.portfolio.util;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Scanner;
 
 public class InputUtil {
@@ -20,9 +22,11 @@ public class InputUtil {
         return Long.parseLong(input.nextLine().trim());
     }
 
-    public static float readFloat(String prompt){
-        System.out.println(prompt);
-        return Float.parseFloat(input.next().trim());
+
+
+    public static LocalDate readDate(String prompt) {
+        System.out.print(prompt);
+        return LocalDate.parse(input.nextLine().trim());
     }
 
     public static double readDouble(String prompt) {

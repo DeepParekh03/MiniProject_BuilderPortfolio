@@ -9,6 +9,7 @@ import builder.portfolio.repository.BuilderRepository;
 import builder.portfolio.service.intefaces.IBuilderService;
 import builder.portfolio.util.SessionManager;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class BuilderService implements IBuilderService {
                                double actualSpend,
                                long manager,
                                long client,
+                               LocalDate endDate,
                                int numberOfTasks) {
 
         Project project = new Project();
@@ -31,6 +33,7 @@ public class BuilderService implements IBuilderService {
         project.setBuilderId(SessionManager.getCurrentUser().getUserId());
         project.setProjectManagerId(manager);
         project.setClientId(client);
+        project.setEndDate(endDate);
         project.setStatus(Status.UPCOMING);
 
         Project savedProject = repository.createProjectRepository(project);

@@ -14,12 +14,12 @@ import java.util.List;
 import static builder.portfolio.util.ValidatorUtil.isValidDocumentPath;
 
 public class ProjectManagerController {
-    BuilderController builderController=new BuilderController();
+    CommonRepository commonRepository=new CommonRepository();
     BuilderService builderService=new BuilderService();
     ProjectManagrService projectManagrService=new ProjectManagrService();
 
     public  void viewProjects(){
-        long projectId =builderController.availableProjects();
+        long projectId =commonRepository.availableProjects();
         System.out.println("All Available tasks for selected project ID are: ");
         List<Task> taskList=new ArrayList<>();
         taskList= CommonRepository.getAllTasks(projectId);
@@ -33,7 +33,7 @@ public class ProjectManagerController {
     }
 
     public void updateProjectStatus(){
-        long projectId=builderController.availableProjects();
+        long projectId=commonRepository.availableProjects();
         int numberOfTasksCompleted=InputUtil.readInt("Enter number of tasks completed: ");
         int totalTaskUpdate= projectManagrService.updateProjectStatus(projectId,numberOfTasksCompleted);
         if (totalTaskUpdate == 0) {
@@ -45,7 +45,7 @@ public class ProjectManagerController {
     }
 
     public  void updateProjectActualSpend(){
-        long projectId=builderController.availableProjects();
+        long projectId=commonRepository.availableProjects();
         double actualSpend=InputUtil.readDouble("Enter amount spend: ");
         double moneySpend=projectManagrService.updateActualSpend(projectId,actualSpend);
         if(moneySpend!=0){
@@ -60,7 +60,7 @@ public class ProjectManagerController {
 
 
     public void uploadDocuments(){
-        long projectId =builderController.availableProjects();
+        long projectId =commonRepository.availableProjects();
         String documentName= InputUtil.readString("Enter Document Name: ");
         String documentPath;
         while (true) {

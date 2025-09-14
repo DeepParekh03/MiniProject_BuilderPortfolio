@@ -2,6 +2,9 @@ package builder.portfolio.model;
 
 import builder.portfolio.model.enums.Status;
 import lombok.*;
+
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 
@@ -19,6 +22,7 @@ public class Project {
     private long builderId;
     private long projectManagerId;
     private long clientId;
+    private LocalDate endDate;
     private List<Document> document;
     private List<Task> timeline;
 }

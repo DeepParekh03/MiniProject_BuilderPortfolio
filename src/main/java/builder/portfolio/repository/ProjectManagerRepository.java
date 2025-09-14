@@ -50,29 +50,60 @@ public class ProjectManagerRepository {
     }
 
     public int updateProjectStatus(long projectId, int numberOfTasks) {
-        String sql = """
-            UPDATE task t
-            SET status = 'COMPLETED',
-                updated_at = NOW()
-            WHERE t.task_id IN (
-                SELECT task_id
-                FROM task
-                WHERE project_id = ? AND status = 'PENDING'
-                ORDER BY task_id
-                LIMIT ?
-            )
-            """;
+        String updateTasksSql = """
+        UPDATE task t
+        SET status = 'COMPLETED',
+            updated_at = NOW()
+        WHERE t.task_id IN (
+            SELECT task_id
+            FROM task
+            WHERE project_id = ? AND status = 'PENDING'
+            ORDER BY task_id
+            LIMIT ?
+        )
+        """;
+
+        String countPendingSql = """
+        SELECT COUNT(*) AS pending_count
+        FROM task
+        WHERE project_id = ? AND status = 'PENDING'
+        """;
+
+        String updateProjectStatusSql = """
+        UPDATE project
+        SET status = ?
+        WHERE project_id = ?
+        """;
 
         try (Connection connection = DBUtil.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
+             PreparedStatement psUpdateTasks = connection.prepareStatement(updateTasksSql);
+             PreparedStatement psCountPending = connection.prepareStatement(countPendingSql);
+             PreparedStatement psUpdateProject = connection.prepareStatement(updateProjectStatusSql)) {
 
-            ps.setLong(1, projectId);
-            ps.setInt(2, numberOfTasks);
+            connection.setAutoCommit(false);
 
-            return ps.executeUpdate();
+            psUpdateTasks.setLong(1, projectId);
+            psUpdateTasks.setInt(2, numberOfTasks);
+            int updatedTasks = psUpdateTasks.executeUpdate();
+
+            psCountPending.setLong(1, projectId);
+            ResultSet rs = psCountPending.executeQuery();
+            int pendingCount = 0;
+            if (rs.next()) {
+                pendingCount = rs.getInt("pending_count");
+            }
+
+            String newStatus = (pendingCount > 0) ? "IN PROGRESS" : "COMPLETED";
+            psUpdateProject.setString(1, newStatus);
+            psUpdateProject.setLong(2, projectId);
+            psUpdateProject.executeUpdate();
+
+            connection.commit();
+            return updatedTasks;
 
         } catch (SQLException sqlException) {
             throw new RuntimeException(sqlException);
         }
     }
+
 }
