@@ -67,6 +67,7 @@ db_database_name=builderportfolio
 ```
 
 ## Required Tables:
+```
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     username VARCHAR(100) NOT NULL,
@@ -74,7 +75,8 @@ CREATE TABLE users (
     password VARCHAR(100) NOT NULL,
     role VARCHAR(50) NOT NULL
 );
-
+```
+```
 CREATE TABLE projects (
     project_id SERIAL PRIMARY KEY,
     project_name VARCHAR(255) NOT NULL,
@@ -85,21 +87,23 @@ CREATE TABLE projects (
     actual_spend NUMERIC,
     status VARCHAR(50)
 );
-
+```
+```
 CREATE TABLE documents (
     document_id SERIAL PRIMARY KEY,
     project_id INT REFERENCES projects(project_id),
     document_name VARCHAR(255),
     uploaded_by INT REFERENCES users(user_id)
 );
-
+```
+```
 CREATE TABLE audit_trail (
     audit_id SERIAL PRIMARY KEY,
     action VARCHAR(255),
     performed_by INT REFERENCES users(user_id),
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
+```
 ## Maven Dependencies
 <dependencies>
     <dependency>
