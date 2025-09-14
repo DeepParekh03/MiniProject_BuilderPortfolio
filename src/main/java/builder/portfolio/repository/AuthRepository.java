@@ -4,9 +4,10 @@ import builder.portfolio.exceptions.InvalidUserFormatException;
 import builder.portfolio.model.User;
 import builder.portfolio.model.enums.UserRole;
 import builder.portfolio.util.DBUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
-
+@Slf4j
 public class AuthRepository {
 
     public User login(String email, String password) {
@@ -22,7 +23,7 @@ public class AuthRepository {
                 return mapUserFromResultSet(rs);
             }
         } catch (SQLException | InvalidUserFormatException exception) {
-            exception.printStackTrace();
+            log.error(exception.getMessage());
         }
 
         return null;
@@ -48,7 +49,7 @@ public class AuthRepository {
             }
 
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            log.error(sqlException.getMessage());
         }
         return null;
     }

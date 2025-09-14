@@ -1,6 +1,7 @@
 package builder.portfolio.repository;
 
 import builder.portfolio.util.DBUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Slf4j
 public class ProjectManagerRepository {
 
     public double getCurrentActualSpend(long projectId){
@@ -26,7 +28,8 @@ public class ProjectManagerRepository {
             return actualSpend;
 
         } catch (SQLException sqlException) {
-            throw new RuntimeException(sqlException);
+            log.error(sqlException.getMessage());
+            return 0;
         }
     }
 
@@ -48,7 +51,8 @@ public class ProjectManagerRepository {
             return currentActualSpend;
 
         } catch (SQLException sqlException) {
-            throw new RuntimeException(sqlException);
+            log.error(sqlException.getMessage());
+            return 0;
         }
     }
 
@@ -152,7 +156,8 @@ public class ProjectManagerRepository {
             return updatedTasks;
 
         } catch (SQLException sqlException) {
-            throw new RuntimeException(sqlException);
+            log.error(sqlException.getMessage());
+            return 0;
         }
     }
 

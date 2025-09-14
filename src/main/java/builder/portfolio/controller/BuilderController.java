@@ -10,6 +10,7 @@ import builder.portfolio.util.FileWriterUtil;
 import builder.portfolio.util.InputUtil;
 import builder.portfolio.util.SessionManager;
 import builder.portfolio.util.ValidatorUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static builder.portfolio.util.ValidatorUtil.isValidDocumentPath;
 
+@Slf4j
 public class BuilderController {
     private static final BuilderService builderService = new BuilderService();
     private static final CommonRepository commonRepository = new CommonRepository();
@@ -42,10 +44,10 @@ public class BuilderController {
             SessionManager.setCurrentProject(project);
             auditTrail=new AuditTrail("Create Project",SessionManager.getCurrentUser());
             FileWriterUtil.writeAuditTrail(auditTrail);
-            System.out.println("\n===Project added successfully====");
+           log.info("\n===Project added successfully====");
         }
         else{
-            System.out.println("Unable to add Project");
+            log.info("Unable to add Project");
         }
         DashboardController.showDashboard(SessionManager.getCurrentUser());
 
@@ -61,9 +63,9 @@ public class BuilderController {
         if(project!=null){
             auditTrail=new AuditTrail("Update Project",SessionManager.getCurrentUser());
             FileWriterUtil.writeAuditTrail(auditTrail);
-            System.out.println("Update successfull");
+            log.info("Update successfull");
         }else{
-            System.out.println("Failed");
+            log.info("Failed");
         }
         DashboardController.showDashboard(SessionManager.getCurrentUser());
     }
@@ -75,9 +77,9 @@ public class BuilderController {
         if(deletedProject){
             auditTrail=new AuditTrail("Delete Project",SessionManager.getCurrentUser());
             FileWriterUtil.writeAuditTrail(auditTrail);
-            System.out.println("Delete successfull");
+            log.info("Delete successfull");
         }else{
-            System.out.println("Failed");
+            log.info("Failed");
         }
 
         DashboardController.showDashboard(SessionManager.getCurrentUser());
@@ -93,7 +95,7 @@ public class BuilderController {
             FileWriterUtil.writeAuditTrail(auditTrail);
         }
         else {
-            System.out.println("Error updating manager");
+            log.info("Error updating manager");
         }
         DashboardController.showDashboard(SessionManager.getCurrentUser());
     }
@@ -112,7 +114,7 @@ public class BuilderController {
         }
         Document savedDoc= builderService.uploadDocumentDetails(projectId,documentName,documentPath);
         if(savedDoc!=null){
-            System.out.println("Document saved successfully");
+            log.info("Document saved successfully");
             auditTrail=new AuditTrail("Documents Saved Successfully",SessionManager.getCurrentUser());
             FileWriterUtil.writeAuditTrail(auditTrail);
             DashboardController.showDashboard(SessionManager.getCurrentUser());
@@ -142,9 +144,10 @@ public class BuilderController {
         long projectId=commonRepository.availableProjects();
         ProjectTimeline timeline = builderService.getProjectTimeline(projectId);
         if (timeline == null) {
-            System.out.println("Could not fetch project timeline.");
+            log.info("Could not fetch project timeline.");
             return;
         }
+        log.info("Timeline:");
         System.out.println("Project: " + timeline.getProjectName());
         System.out.println("Completed Tasks: " + timeline.getCompletedTasks());
         System.out.println("Remaining Tasks: " + timeline.getRemainingTasks());

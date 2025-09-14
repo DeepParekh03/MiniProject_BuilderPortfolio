@@ -9,11 +9,13 @@ import builder.portfolio.service.implementations.BuilderService;
 import builder.portfolio.service.implementations.ClientService;
 import builder.portfolio.util.FileWriterUtil;
 import builder.portfolio.util.SessionManager;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class ClientController {
     ClientService clientService=new ClientService();
     BuilderService builderService = new BuilderService();
@@ -24,7 +26,7 @@ public class ClientController {
         List<Project> projectList=new ArrayList<>();
         projectList=clientService.viewOwnedProjects(SessionManager.getCurrentUser());
         if(projectList.isEmpty()){
-            System.out.println("Unable to Load Projects");
+            log.info("Unable to Load Projects");
         }else{
             auditTrail=new AuditTrail("View Projects",SessionManager.getCurrentUser());
             FileWriterUtil.writeAuditTrail(auditTrail);
@@ -47,7 +49,7 @@ public class ClientController {
             auditTrail=new AuditTrail("Budget Tracked",SessionManager.getCurrentUser());
             FileWriterUtil.writeAuditTrail(auditTrail);
 
-            System.out.println("Budget Status of Project: "+budgetStatus);
+            log.info("Budget Status of Project: {}", budgetStatus);
             DashboardController.showDashboard(SessionManager.getCurrentUser());
         }
     }
@@ -57,7 +59,7 @@ public class ClientController {
         List<Document> documentList=new ArrayList<>();
         documentList=clientService.getUploadedDocs(projectId);
         if(documentList==null){
-            System.out.println("No docs to be shown");
+            log.info("No docs to be shown");
 
         }else{
             auditTrail=new AuditTrail("Viewed Saved Documents",SessionManager.getCurrentUser());
@@ -77,7 +79,7 @@ public class ClientController {
         long projectId=commonRepository.availableProjects();
         ProjectTimeline timeline = builderService.getProjectTimeline(projectId);
         if (timeline == null) {
-            System.out.println("Could not fetch project timeline.");
+            log.info("Could not fetch project timeline.");
             return;
         }
         System.out.println("Project: " + timeline.getProjectName());

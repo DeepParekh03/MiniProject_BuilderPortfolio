@@ -1,11 +1,13 @@
 package builder.portfolio.repository;
 
 import builder.portfolio.util.DBUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Slf4j
 public class AdminRepository {
     public boolean deleteProjectManager(long userId){
         String sql="DELETE FROM users WHERE user_id=?";
@@ -17,8 +19,8 @@ public class AdminRepository {
             int updatedRows = ps.executeUpdate();
             return updatedRows > 0;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+           log.error(sqlException.getMessage());
             return false;
         }
     }

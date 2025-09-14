@@ -6,12 +6,14 @@ import builder.portfolio.model.ProjectTimeline;
 import builder.portfolio.model.Task;
 import builder.portfolio.model.enums.Status;
 import builder.portfolio.util.DBUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Slf4j
 public class BuilderRepository {
 
     public Project createProjectRepository(Project project) {
@@ -45,7 +47,7 @@ public class BuilderRepository {
             return project;
 
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            log.error(sqlException.getMessage());
             return null;
         }
     }
@@ -76,7 +78,7 @@ public class BuilderRepository {
             return project;
 
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            log.error(sqlException.getMessage());
             return null;
         }
     }
@@ -115,7 +117,7 @@ public class BuilderRepository {
                 throw sqlException;
             }
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            log.error(sqlException.getMessage());
         }
         return false;
     }
@@ -141,8 +143,8 @@ public class BuilderRepository {
 
             return false;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
             return false;
         }
     }
@@ -168,7 +170,7 @@ public class BuilderRepository {
             return document;
 
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            log.error(sqlException.getMessage());
             return null;
         }
     }
@@ -192,7 +194,7 @@ public class BuilderRepository {
             return task;
 
         } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+            log.error(sqlException.getMessage());
             return null;
         }
     }
@@ -206,8 +208,8 @@ public class BuilderRepository {
             ps.setLong(1, userId);
             ps.setString(2, message);
             ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
         }
 
         System.out.println("NOTIFICATION[" + roleLabel + "]: Sending...");
@@ -255,8 +257,8 @@ public class BuilderRepository {
 
             return new ProjectTimeline(projectId, projectName, completed, total, endDate);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
             return null;
         }
     }

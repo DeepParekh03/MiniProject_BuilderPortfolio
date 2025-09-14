@@ -10,12 +10,14 @@ import builder.portfolio.model.enums.UserRole;
 import builder.portfolio.util.DBUtil;
 import builder.portfolio.util.SessionManager;
 import builder.portfolio.util.ValidatorUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.print.Doc;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class CommonRepository {
 
     public static List<Project> getAllProjects(User user) {
@@ -51,8 +53,8 @@ public class CommonRepository {
                 projects.add(mapProjectFromResultSet(rs));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
         }
 
         return projects;
@@ -71,8 +73,8 @@ public class CommonRepository {
                 taskList.add(mapTaskFromResultSet(rs));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
         }
         return taskList;
     }
@@ -90,8 +92,8 @@ public class CommonRepository {
                 documentList.add(mapDocumentFromResultSet(rs));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
         }
         return documentList;
     }
@@ -110,8 +112,8 @@ public class CommonRepository {
                 users.add(mapUserFromResultSet(rs));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
         }
         return users;
     }
@@ -135,11 +137,10 @@ public class CommonRepository {
                 budgetStatus= "IN BUDGET";
             }
             else{
-                System.out.println("Out");
                 budgetStatus= "OUT OF BUDGET";
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
         }
         return budgetStatus;
     }

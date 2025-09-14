@@ -77,3 +77,7 @@ User Logged In,1,Deep,BUILDER
 Create Project,1,Deep,BUILDER
 Documents Saved Successfully,1,Deep,BUILDER
 User Logged In,7,Admin,ADMIN
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Documents Saved Successfully,1,Deep,BUILDER

@@ -1,26 +1,26 @@
 package builder.portfolio.controller;
-
-import builder.portfolio.model.AuditTrail;
 import builder.portfolio.model.Project;
 import builder.portfolio.model.User;
 import builder.portfolio.model.enums.UserRole;
 import builder.portfolio.repository.CommonRepository;
 import builder.portfolio.service.implementations.AdminService;
 import builder.portfolio.util.FileReaderUtil;
-import builder.portfolio.util.FileWriterUtil;
 import builder.portfolio.util.SessionManager;
 import builder.portfolio.util.ValidatorUtil;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class AdminController {
     AdminService adminService=new AdminService();
     public void viewAllProjects(){
         List<Project> projectList=new ArrayList<>();
         projectList= adminService.viewAllProjects(SessionManager.getCurrentUser());
         if(projectList.isEmpty()){
-            System.out.println("No current projects in the system");
+            log.info("No current projects in the system");
         }
         else{
             projectList.forEach(project ->
@@ -55,10 +55,10 @@ public class AdminController {
         );
         deleteManager=adminService.deleteProjectManager(projectMangerId);
         if(deleteManager){
-            System.out.println("Manager Deleted Successfully");
+            log.info("Manager Deleted Successfully");
         }
         else{
-            System.out.println("Error Deleting Manager");
+            log.info("Error Deleting Manager");
         }
         DashboardController.showDashboard(SessionManager.getCurrentUser());
 
@@ -76,10 +76,10 @@ public class AdminController {
         );
         deleteClient=adminService.deleteClient(clientId);
         if(deleteClient){
-            System.out.println("Client Deleted Successfully");
+            log.info("Client Deleted Successfully");
         }
         else{
-            System.out.println("Error Deleting Client");
+            log.info("Error Deleting Client");
         }
         DashboardController.showDashboard(SessionManager.getCurrentUser());
 
@@ -97,10 +97,10 @@ public class AdminController {
         );
         deleteBuilderDetails= adminService.deleteBuilder(builderId);
         if(deleteBuilderDetails){
-            System.out.println("Builder Deleted Successfully");
+            log.info("Builder Deleted Successfully");
         }
         else{
-            System.out.println("Error Deleting Builder");
+            log.info("Error Deleting Builder");
         }
         DashboardController.showDashboard(SessionManager.getCurrentUser());
 

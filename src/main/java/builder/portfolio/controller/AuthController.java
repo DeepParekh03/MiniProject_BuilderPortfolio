@@ -8,7 +8,9 @@ import builder.portfolio.util.FileWriterUtil;
 import builder.portfolio.util.InputUtil;
 import builder.portfolio.util.SessionManager;
 import builder.portfolio.util.ValidatorUtil;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class AuthController {
 
     private final AuthService authService = new AuthService();
@@ -20,7 +22,7 @@ public class AuthController {
         User loggedUser = authService.login(email, password);
 
         if (loggedUser == null) {
-            System.out.println("Login failed. Invalid credentials.");
+            log.info("Login failed. Invalid credentials.");
             return null;
         }
 
@@ -28,7 +30,7 @@ public class AuthController {
         auditTrail=new AuditTrail("User Logged In",SessionManager.getCurrentUser());
         FileWriterUtil.writeAuditTrail(auditTrail);
 
-        System.out.println("Login successful! Welcome, " + loggedUser.getUserName() + ".");
+        log.info("Login successful! Welcome, " + loggedUser.getUserName() + ".");
         DashboardController.showDashboard(loggedUser);
         return loggedUser;
     }
@@ -55,10 +57,10 @@ public class AuthController {
             FileWriterUtil.writeAuditTrail(auditTrail);
 
             System.out.println("==== User Registered Successfully ====");
-            System.out.println("Assigned User ID: " + registeredUser.getUserId());
+            log.info("Assigned User ID: " + registeredUser.getUserId());
             DashboardController.showDashboard(registeredUser);
         } else {
-            System.out.println("Registration failed. Please try again.");
+            log.info("Registration failed. Please try again.");
         }
 
         return registeredUser;

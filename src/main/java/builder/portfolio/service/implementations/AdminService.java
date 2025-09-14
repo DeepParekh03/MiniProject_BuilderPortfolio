@@ -39,4 +39,7 @@ public class AdminService implements IAdminService {
         deleteStatus=adminRepository.deleteProjectManager(userId);
         return deleteStatus;
     }
+
 }
+
+

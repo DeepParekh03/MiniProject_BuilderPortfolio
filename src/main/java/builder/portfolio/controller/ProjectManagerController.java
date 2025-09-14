@@ -9,12 +9,15 @@ import builder.portfolio.service.implementations.ProjectManagrService;
 import builder.portfolio.util.FileWriterUtil;
 import builder.portfolio.util.InputUtil;
 import builder.portfolio.util.SessionManager;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static builder.portfolio.util.ValidatorUtil.isValidDocumentPath;
 
+
+@Slf4j
 public class ProjectManagerController {
     CommonRepository commonRepository=new CommonRepository();
     BuilderService builderService=new BuilderService();
@@ -23,7 +26,7 @@ public class ProjectManagerController {
 
     public  void viewProjects(){
         long projectId =commonRepository.availableProjects();
-        System.out.println("All Available tasks for selected project ID are: ");
+        log.info("All Available tasks for selected project ID are: ");
         List<Task> taskList=new ArrayList<>();
         taskList= CommonRepository.getAllTasks(projectId);
         taskList.stream().forEach(task -> {
@@ -44,7 +47,7 @@ public class ProjectManagerController {
         } else {
             auditTrail=new AuditTrail("Updated Project Status",SessionManager.getCurrentUser());
             FileWriterUtil.writeAuditTrail(auditTrail);
-            System.out.println(totalTaskUpdate + " tasks marked as COMPLETED.");
+            log.info("{} tasks marked as COMPLETED.", totalTaskUpdate);
         }
         DashboardController.showDashboard(SessionManager.getCurrentUser());
     }
@@ -56,7 +59,7 @@ public class ProjectManagerController {
         if(moneySpend!=0){
             auditTrail=new AuditTrail("Updated Project Spend",SessionManager.getCurrentUser());
             FileWriterUtil.writeAuditTrail(auditTrail);
-            System.out.println("Updated Project Actual Spend: "+moneySpend);
+            log.info("Updated Project Actual Spend: {}", moneySpend);
         }else{
             System.out.println("Error updating");
         }
@@ -81,7 +84,7 @@ public class ProjectManagerController {
         }
         Document savedDoc= builderService.uploadDocumentDetails(projectId,documentName,documentPath);
         if(savedDoc!=null){
-            System.out.println("Document saved successfully");
+            log.info("Document saved successfully");
             auditTrail=new AuditTrail("Document Saved",SessionManager.getCurrentUser());
             FileWriterUtil.writeAuditTrail(auditTrail);
 
