@@ -34,6 +34,8 @@ public class BuilderMenu {
                     builderController.uploadDocuments();
                 case "6":
                     builderController.viewPortfolio();
+                case "7":
+                    builderController.viewTimeLine();
                 case "0":
                     SessionManager.setCurrentUser(null);
                     MainMenu.show();

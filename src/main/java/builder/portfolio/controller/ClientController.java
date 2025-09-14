@@ -3,6 +3,7 @@ package builder.portfolio.controller;
 import builder.portfolio.model.AuditTrail;
 import builder.portfolio.model.Document;
 import builder.portfolio.model.Project;
+import builder.portfolio.model.ProjectTimeline;
 import builder.portfolio.repository.CommonRepository;
 import builder.portfolio.service.implementations.BuilderService;
 import builder.portfolio.service.implementations.ClientService;
@@ -15,8 +16,10 @@ import java.util.List;
 
 public class ClientController {
     ClientService clientService=new ClientService();
+    BuilderService builderService = new BuilderService();
     CommonRepository commonRepository=new CommonRepository();
     AuditTrail auditTrail=new AuditTrail();
+
     public void viewOwnedProjects(){
         List<Project> projectList=new ArrayList<>();
         projectList=clientService.viewOwnedProjects(SessionManager.getCurrentUser());
@@ -68,5 +71,21 @@ public class ClientController {
             });
             DashboardController.showDashboard(SessionManager.getCurrentUser());
         }
+    }
+
+    public void viewTimeLine() {
+        long projectId=commonRepository.availableProjects();
+        ProjectTimeline timeline = builderService.getProjectTimeline(projectId);
+        if (timeline == null) {
+            System.out.println("Could not fetch project timeline.");
+            return;
+        }
+        System.out.println("Project: " + timeline.getProjectName());
+        System.out.println("Completed Tasks: " + timeline.getCompletedTasks());
+        System.out.println("Remaining Tasks: " + timeline.getRemainingTasks());
+        System.out.println("Days Remaining: " + timeline.getDaysRemaining());
+        System.out.println("Progress: " + timeline.getGanttChart());
+
+        DashboardController.showDashboard(SessionManager.getCurrentUser());
     }
 }

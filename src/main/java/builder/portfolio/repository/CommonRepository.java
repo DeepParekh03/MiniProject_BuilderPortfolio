@@ -129,7 +129,7 @@ public class CommonRepository {
             ResultSet rs= ps.executeQuery();
             if(rs.next()){
                 actual_spend=rs.getDouble("actual_spend");
-                planned_budget=rs.getDouble("planned_subject");
+                planned_budget=rs.getDouble("planned_budget");
             }
             if(actual_spend<planned_budget){
                 budgetStatus= "IN BUDGET";
@@ -174,7 +174,6 @@ public class CommonRepository {
     }
 
     public long availableProjects(){
-        System.out.println("Here");
         System.out.println("Available Projects: ");
         List<Project> projectList= CommonRepository.getAllProjects(SessionManager.getCurrentUser());
         projectList.forEach(project ->
@@ -220,9 +219,7 @@ public class CommonRepository {
         document.setDocumentId(rs.getLong("document_id"));
         document.setType(rs.getString("document_type"));
         document.setDocumentName(rs.getString("document_name"));
-        User uploader = new User();
-        uploader.setUserId(rs.getLong("uploaded_by"));
-        document.setUploadedBy(uploader);
+        document.setUploadedBy(rs.getString("uploaded_by"));
         return document;
     }
 

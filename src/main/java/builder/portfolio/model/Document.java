@@ -13,5 +13,5 @@ public class Document {
     private String documentName;
     private String type;
     private String filePath;
-    private User uploadedBy;
+    private String uploadedBy;
 }

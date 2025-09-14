@@ -2,6 +2,7 @@ package builder.portfolio.service.intefaces;
 
 import builder.portfolio.model.Document;
 import builder.portfolio.model.Project;
+import builder.portfolio.model.ProjectTimeline;
 import builder.portfolio.model.User;
 
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public interface IBuilderService {
     void budgetTrack(long projectId);
     void projectStatus(long projectId);
     void getUploadADocs(long projectId);
+    ProjectTimeline getProjectTimeline(long projectId);
 
     Project updateProjectService(long projectId,String pojectName,double plannedBudget);
     boolean updateProjectManagerService(long projectId,long projectManagerId);

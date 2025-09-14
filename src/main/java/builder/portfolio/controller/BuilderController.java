@@ -1,9 +1,6 @@
 package builder.portfolio.controller;
 
-import builder.portfolio.model.AuditTrail;
-import builder.portfolio.model.Document;
-import builder.portfolio.model.Project;
-import builder.portfolio.model.User;
+import builder.portfolio.model.*;
 import builder.portfolio.model.enums.Status;
 import builder.portfolio.model.enums.UserRole;
 import builder.portfolio.repository.BuilderRepository;
@@ -33,6 +30,11 @@ public class BuilderController {
         long managerId= commonRepository.availableProjectManagers();;
         long clientId=commonRepository.availableClients();
         LocalDate endDate = InputUtil.readDate("Enter the estimated Completion Date (dd-MM-yyyy): ");
+        boolean validDate=ValidatorUtil.isValidDate(endDate);
+        while (true){
+            if(validDate){break;}
+            else {System.out.println("Invalid Date try again");}
+        }
         int numberOfTasks=InputUtil.readInt("Enter total no. of phases: ");
         Project project=new Project();
         project=builderService.createProjectService(projectName,plannedBudget,0,managerId,clientId,endDate,numberOfTasks);
@@ -134,6 +136,22 @@ public class BuilderController {
                     System.out.println("Invalid choice! Try Again");
             }
         }
+    }
+
+    public void viewTimeLine() {
+        long projectId=commonRepository.availableProjects();
+        ProjectTimeline timeline = builderService.getProjectTimeline(projectId);
+        if (timeline == null) {
+            System.out.println("Could not fetch project timeline.");
+            return;
+        }
+        System.out.println("Project: " + timeline.getProjectName());
+        System.out.println("Completed Tasks: " + timeline.getCompletedTasks());
+        System.out.println("Remaining Tasks: " + timeline.getRemainingTasks());
+        System.out.println("Days Remaining: " + timeline.getDaysRemaining());
+        System.out.println("Progress: " + timeline.getGanttChart());
+
+        DashboardController.showDashboard(SessionManager.getCurrentUser());
     }
 
 }

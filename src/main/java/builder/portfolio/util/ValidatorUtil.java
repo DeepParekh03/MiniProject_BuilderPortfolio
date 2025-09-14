@@ -1,5 +1,6 @@
 package builder.portfolio.util;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.function.Function;
 
@@ -30,6 +31,12 @@ public class ValidatorUtil {
                 || role.equalsIgnoreCase("ADMIN") || role.equalsIgnoreCase("CLIENT");
     }
 
+    public static boolean isValidDate(LocalDate date) {
+        if (date == null) {
+            return false;
+        }
+        return !date.isBefore(LocalDate.now());
+    }
 
     public static <T> long validateId(String prompt, List<T> items, Function<T, Long> idMapper) {
 

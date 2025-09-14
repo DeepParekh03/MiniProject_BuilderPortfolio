@@ -22,3 +22,58 @@ User Logged In,1,Deep,BUILDER
 Create Project,1,Deep,BUILDER
 User Logged In,2,Nik,PROJECT_MANAGER
 User Logged In,1,Deep,BUILDER
+User Logged In,2,Nik,PROJECT_MANAGER
+Updated Project Status,2,Nik,PROJECT_MANAGER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+User Logged In,2,Nik,PROJECT_MANAGER
+Updated Project Status,2,Nik,PROJECT_MANAGER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+User Logged In,2,Nik,PROJECT_MANAGER
+Updated Project Status,2,Nik,PROJECT_MANAGER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Update Project,1,Deep,BUILDER
+Updated Project Manager,1,Deep,BUILDER
+Updated Project Manager,1,Deep,BUILDER
+Documents Saved Successfully,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Delete Project,1,Deep,BUILDER
+User Logged In,2,Nik,PROJECT_MANAGER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Registered,8,John,CLIENT
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+User Logged In,8,John,CLIENT
+View Projects,8,John,CLIENT
+Budget Tracked,8,John,CLIENT
+User Logged In,2,Nik,PROJECT_MANAGER
+Updated Project Status,2,Nik,PROJECT_MANAGER
+Updated Project Spend,2,Nik,PROJECT_MANAGER
+Document Saved,2,Nik,PROJECT_MANAGER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+User Logged In,1,Deep,BUILDER
+Create Project,1,Deep,BUILDER
+Documents Saved Successfully,1,Deep,BUILDER
+User Logged In,7,Admin,ADMIN

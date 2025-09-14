@@ -2,8 +2,9 @@ package builder.portfolio.util;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import java.time.format.ResolverStyle;
 
 public class InputUtil {
     private static final Scanner input = new Scanner(System.in);
@@ -24,13 +25,21 @@ public class InputUtil {
     }
 
 
+    private static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ofPattern("dd-MM-uuuu").withResolverStyle(ResolverStyle.STRICT);
 
     public static LocalDate readDate(String prompt) {
-        System.out.print(prompt);
-        String inputDate = input.nextLine().trim();
+        while (true) {
+            System.out.print(prompt);
+            String date = input.nextLine().trim();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return LocalDate.parse(inputDate, formatter);
+            try {
+                LocalDate finalDate = LocalDate.parse(date, FORMATTER);
+                return finalDate;
+            } catch (DateTimeParseException e) {
+                System.out.println(" Invalid date format. Please use dd-MM-yyyy (e.g. 15-09-2025).");
+            }
+        }
     }
 
 

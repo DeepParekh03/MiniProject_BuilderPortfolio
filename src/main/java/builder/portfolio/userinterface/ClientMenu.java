@@ -10,9 +10,9 @@ public class ClientMenu {
         ClientController clientController=new ClientController();
         System.out.println("\n--- CLIENT MENU ---");
         System.out.println("1. View Owned Projects");
-        System.out.println("2. View Budget");
+        System.out.println("2. View Budget Status");
         System.out.println("3. View Documents");
-        System.out.println("4. View Budget");
+        System.out.println("4. View Timeline");
         System.out.println("0. LogOut");
         String choice = InputUtil.readString("Enter choice: ");
         while(true){
@@ -23,8 +23,8 @@ public class ClientMenu {
                     clientController.trackBudget();
                 case "3":
                     clientController.getUploadedDocs();
-//                case "4":
-//                    clientController.viewProjectTimeline();
+               case "4":
+                    clientController.viewTimeLine();
                 case "0":
                     SessionManager.setCurrentUser(null);
                     MainMenu.show();

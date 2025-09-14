@@ -1,10 +1,7 @@
 package builder.portfolio.service.implementations;
 
 import builder.portfolio.controller.DashboardController;
-import builder.portfolio.model.Document;
-import builder.portfolio.model.Project;
-import builder.portfolio.model.Task;
-import builder.portfolio.model.User;
+import builder.portfolio.model.*;
 import builder.portfolio.model.enums.Status;
 import builder.portfolio.repository.BuilderRepository;
 import builder.portfolio.repository.CommonRepository;
@@ -15,6 +12,7 @@ import javax.print.Doc;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class BuilderService implements IBuilderService {
 
@@ -74,7 +72,7 @@ public class BuilderService implements IBuilderService {
         Document document=new Document();
         document.setProjectId(projectId);
         document.setDocumentName(documentName);
-        document.setUploadedBy(SessionManager.getCurrentUser());
+        document.setUploadedBy(SessionManager.getCurrentUser().getUserName());
         document.setFilePath(documentPath);
         document.setType(documentPath.substring(documentPath.length()-3));
 
@@ -85,7 +83,6 @@ public class BuilderService implements IBuilderService {
     @Override
     public void budgetTrack(long projectId) {
         String budgetStatus="";
-        projectId= commonRepository.availableProjects();
         budgetStatus= commonRepository.trackBudget(projectId);
         if(budgetStatus!=null){
             System.out.println("Budget Status of Project: "+budgetStatus);
@@ -96,15 +93,17 @@ public class BuilderService implements IBuilderService {
     @Override
     public void projectStatus(long projectId) {
         List<Task> taskList=CommonRepository.getAllTasks(projectId);
+        System.out.println(taskList);
         taskList.forEach(task -> {
             String updatedInfo;
-            if (task.getCreatedAt().equals(task.getUpdatedAt())) {
+            if (!Objects.equals(task.getStatus(), "COMPLETED")) {
                 updatedInfo = "Not worked on";
             } else {
                 updatedInfo = "Last Updated At: " + task.getUpdatedAt();
             }
             System.out.println(task.getTaskName() + " | " + task.getStatus() + " | " + "Created At: " + task.getCreatedAt() + " | " + updatedInfo);
-        });
+            });
+        DashboardController.showDashboard(SessionManager.getCurrentUser());
 
     }
 
@@ -114,16 +113,16 @@ public class BuilderService implements IBuilderService {
         documentList=CommonRepository.getAllDocuments(projectId);
         if(documentList.isEmpty()){
             System.out.println("No docs to be shown");
-
         }else{
             documentList.forEach(document -> {
                 System.out.println("Document Name: "+document.getDocumentName()
-                        +"Document Type: "+document.getType()
-                        +"Document URL: "+document.getFilePath()
-                        +"Uploaded By: "+document.getUploadedBy());
+                        +", Document Type: "+document.getType()
+                        +", Document URL: "+document.getFilePath()
+                        +", Uploaded By: "+document.getUploadedBy());
             });
-            DashboardController.showDashboard(SessionManager.getCurrentUser());
-        }
+            }
+        DashboardController.showDashboard(SessionManager.getCurrentUser());
+
 
     }
 
@@ -147,6 +146,11 @@ public class BuilderService implements IBuilderService {
 
         boolean deleteProject = repository.deleteProjectRepository(project);
         return deleteProject;
+    }
+
+    @Override
+    public ProjectTimeline getProjectTimeline(long projectId) {
+        return repository.getProjectTimeline(projectId);
     }
 
 }

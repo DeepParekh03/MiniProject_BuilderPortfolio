@@ -121,7 +121,7 @@ public class ProjectManagerRepository {
                 pendingCount = rs.getInt("pending_count");
             }
 
-            String newStatus = (pendingCount > 0) ? "IN PROGRESS" : "COMPLETED";
+            String newStatus = (pendingCount > 0) ? "IN_PROGRESS" : "COMPLETED";
 
             if (!newStatus.equals(currentStatus)) {
                 psUpdateProject.setString(1, newStatus);

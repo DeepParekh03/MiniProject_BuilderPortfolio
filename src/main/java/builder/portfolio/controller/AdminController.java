@@ -38,6 +38,7 @@ public class AdminController {
                     ", Performed By: " + audit.getPerformedBy().getUserName()+
                     ", User Type: "+audit.getPerformedBy().getRole());
         });
+        DashboardController.showDashboard(SessionManager.getCurrentUser());
 
 
     }
