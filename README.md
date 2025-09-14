@@ -105,6 +105,8 @@ CREATE TABLE audit_trail (
 );
 ```
 ## Maven Dependencies
+
+```
 <dependencies>
     <dependency>
         <groupId>org.postgresql</groupId>
@@ -146,8 +148,7 @@ CREATE TABLE audit_trail (
         <scope>test</scope>
     </dependency>
 </dependencies>
-
-## Project Structure
+```
 ## Project Structure
 
 ```
