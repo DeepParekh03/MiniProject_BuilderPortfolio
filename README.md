@@ -171,7 +171,7 @@ src/
 
 # Clone the Repository
 ```
-git clone <your-repo-url>
+git clone https://github.com/DeepParekh03/MiniProject_BuilderPortfolio
 cd builder-portfolio
 ```
 # Set up PostgreSQL Database
