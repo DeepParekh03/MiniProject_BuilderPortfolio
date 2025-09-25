@@ -10,12 +10,21 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
+/**
+ * Repository class for Builder-related database operations.
+ * Handles CRUD operations for projects, tasks, documents, and notifications.
+ */
 @Slf4j
 public class BuilderRepository {
 
+    /**
+     * Creates a new project in the database and sends notifications
+     * to the assigned client and project manager.
+     *
+     * @param project the {@link Project} object containing project details
+     * @return the created {@link Project} with assigned project ID, or {@code null} if creation fails
+     */
     public Project createProjectRepository(Project project) {
         String sql = """
             INSERT INTO project (project_name, status, planned_budget, actual_spend, builder_id, manager_id, client_id, end_date)
@@ -52,6 +61,13 @@ public class BuilderRepository {
         }
     }
 
+    /**
+     * Updates an existing project's name and budget, and sends notifications
+     * to the assigned client and project manager.
+     *
+     * @param project the {@link Project} object containing updated details
+     * @return the updated {@link Project}, or {@code null} if update fails
+     */
     public Project updateProjectRepository(Project project) {
         String sql = """
             UPDATE project SET project_name = ?, planned_budget = ?
@@ -83,6 +99,13 @@ public class BuilderRepository {
         }
     }
 
+    /**
+     * Deletes a project along with its associated documents and tasks.
+     * Sends notifications to the assigned client and project manager.
+     *
+     * @param project the {@link Project} to delete
+     * @return {@code true} if the project was successfully deleted; {@code false} otherwise
+     */
     public boolean deleteProjectRepository(Project project) {
         try (Connection connection = DBUtil.getConnection()) {
             connection.setAutoCommit(false);
@@ -122,6 +145,12 @@ public class BuilderRepository {
         return false;
     }
 
+    /**
+     * Updates the project manager for a project and notifies them.
+     *
+     * @param project the {@link Project} object containing the updated manager ID
+     * @return {@code true} if the update succeeded; {@code false} otherwise
+     */
     public boolean updateProjectManagerRepository(Project project) {
         String sql = "UPDATE project SET manager_id = ? WHERE project_id = ?";
 
@@ -149,10 +178,14 @@ public class BuilderRepository {
         }
     }
 
-
-
-    public Document uploadDocumentDB(Document document){
-        String sql="INSERT INTO DOCUMENT (project_id,document_name, document_url, created_at, document_type, uploaded_by) VALUES (?, ?, ?, ?, ?, ?) RETURNING document_id";
+    /**
+     * Uploads a document associated with a project to the database.
+     *
+     * @param document the {@link Document} to upload
+     * @return the saved {@link Document} with assigned document ID, or {@code null} if upload fails
+     */
+    public Document uploadDocumentDB(Document document) {
+        String sql = "INSERT INTO DOCUMENT (project_id,document_name, document_url, created_at, document_type, uploaded_by) VALUES (?, ?, ?, ?, ?, ?) RETURNING document_id";
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -161,7 +194,7 @@ public class BuilderRepository {
             ps.setString(3, document.getFilePath());
             ps.setDate(4, Date.valueOf(LocalDate.now()));
             ps.setString(5, document.getType());
-            ps.setString(6,document.getUploadedBy());
+            ps.setString(6, document.getUploadedBy());
 
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -175,15 +208,20 @@ public class BuilderRepository {
         }
     }
 
-    public Task saveTask(Task task){
-
-        String sql="INSERT INTO TASK (project_id,task_name,status,created_at,updated_at) VALUES (?, ?, ?, ?, ?) RETURNING task_id";
+    /**
+     * Saves a task associated with a project to the database.
+     *
+     * @param task the {@link Task} to save
+     * @return the saved {@link Task} with assigned task ID, or {@code null} if save fails
+     */
+    public Task saveTask(Task task) {
+        String sql = "INSERT INTO TASK (project_id,task_name,status,created_at,updated_at) VALUES (?, ?, ?, ?, ?) RETURNING task_id";
         try (Connection connection = DBUtil.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ps.setLong(1, task.getProjectId());
             ps.setString(2, task.getTaskName());
-            ps.setString(3,task.getStatus());
+            ps.setString(3, task.getStatus());
             ps.setDate(4, Date.valueOf(LocalDate.now()));
             ps.setDate(5, Date.valueOf(LocalDate.now()));
 
@@ -199,6 +237,14 @@ public class BuilderRepository {
         }
     }
 
+    /**
+     * Sends a notification message to a user.
+     *
+     * @param connection the database connection
+     * @param userId     the recipient user's ID
+     * @param message    the notification message
+     * @param roleLabel  a label for logging purposes (e.g., CLIENT, PROJECT_MANAGER)
+     */
     private void sendNotification(Connection connection, long userId, String message, String roleLabel) {
         if (userId <= 0) return;
 
@@ -219,7 +265,12 @@ public class BuilderRepository {
         System.out.println("NOTIFICATION[" + roleLabel + "]: " + message);
     }
 
-
+    /**
+     * Retrieves the timeline of a project, including completed tasks, total tasks, and end date.
+     *
+     * @param projectId the ID of the project
+     * @return a {@link ProjectTimeline} containing project progress, or {@code null} if retrieval fails
+     */
     public ProjectTimeline getProjectTimeline(long projectId) {
         String taskCountSql = """
             SELECT 
@@ -262,6 +313,4 @@ public class BuilderRepository {
             return null;
         }
     }
-
-
 }

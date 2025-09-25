@@ -63,42 +63,42 @@ class AdminServiceTest {
 
     @Test
     void testDeleteProjectManager_Success() {
-        when(mockAdminRepository.deleteProjectManager(anyLong())).thenReturn(true);
+        when(mockAdminRepository.deleteUser(anyLong())).thenReturn(true);
 
         boolean result = adminService.deleteProjectManager(1L);
 
         assertTrue(result);
-        verify(mockAdminRepository, times(1)).deleteProjectManager(1L);
+        verify(mockAdminRepository, times(1)).deleteUser(1L);
     }
 
     @Test
     void testDeleteClient_Success() {
-        when(mockAdminRepository.deleteProjectManager(anyLong())).thenReturn(true);
+        when(mockAdminRepository.deleteUser(anyLong())).thenReturn(true);
 
         boolean result = adminService.deleteClient(2L);
 
         assertTrue(result);
-        verify(mockAdminRepository, times(1)).deleteProjectManager(2L);
+        verify(mockAdminRepository, times(1)).deleteUser(2L);
     }
 
     @Test
     void testDeleteBuilder_Success() {
-        when(mockAdminRepository.deleteProjectManager(anyLong())).thenReturn(true);
+        when(mockAdminRepository.deleteUser(anyLong())).thenReturn(true);
 
         boolean result = adminService.deleteBuilder(3L);
 
         assertTrue(result);
-        verify(mockAdminRepository, times(1)).deleteProjectManager(3L);
+        verify(mockAdminRepository, times(1)).deleteUser(3L);
     }
 
     @Test
     void testDeleteMethods_Failure() {
-        when(mockAdminRepository.deleteProjectManager(anyLong())).thenReturn(false);
+        when(mockAdminRepository.deleteUser(anyLong())).thenReturn(false);
 
         assertFalse(adminService.deleteProjectManager(10L));
         assertFalse(adminService.deleteClient(11L));
         assertFalse(adminService.deleteBuilder(12L));
 
-        verify(mockAdminRepository, times(3)).deleteProjectManager(anyLong());
+        verify(mockAdminRepository, times(3)).deleteUser(anyLong());
     }
 }

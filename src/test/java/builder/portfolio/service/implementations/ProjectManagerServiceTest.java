@@ -3,25 +3,24 @@ package builder.portfolio.service.implementations;
 import builder.portfolio.repository.ProjectManagerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class ProjectManagrServiceTest {
+class ProjectManagerServiceTest {
 
     private ProjectManagerRepository projectManagerRepository;
-    private ProjectManagrService projectManagrService;
+    private ProjectManagerService projectManagerService;
 
     @BeforeEach
     void setUp() {
         projectManagerRepository = mock(ProjectManagerRepository.class);
-        projectManagrService = new ProjectManagrService();
+        projectManagerService = new ProjectManagerService();
 
          try {
-            var field = ProjectManagrService.class.getDeclaredField("projectManagerRepository");
+            var field = ProjectManagerService.class.getDeclaredField("projectManagerRepository");
             field.setAccessible(true);
-            field.set(projectManagrService, projectManagerRepository);
+            field.set(projectManagerService, projectManagerRepository);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -36,7 +35,7 @@ class ProjectManagrServiceTest {
         when(projectManagerRepository.updateProjectStatus(projectId, numberOfTasks))
                 .thenReturn(expectedTotalTaskUpdate);
 
-        int result = projectManagrService.updateProjectStatus(projectId, numberOfTasks);
+        int result = projectManagerService.updateProjectStatus(projectId, numberOfTasks);
 
         assertEquals(expectedTotalTaskUpdate, result);
         verify(projectManagerRepository, times(1))
@@ -52,7 +51,7 @@ class ProjectManagrServiceTest {
         when(projectManagerRepository.updateProjectActualSpend(projectId, actualSpend))
                 .thenReturn(expectedMoneySpent);
 
-        double result = projectManagrService.updateActualSpend(projectId, actualSpend);
+        double result = projectManagerService.updateActualSpend(projectId, actualSpend);
 
         assertEquals(expectedMoneySpent, result);
         verify(projectManagerRepository, times(1))
