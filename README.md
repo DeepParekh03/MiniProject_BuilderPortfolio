@@ -5,7 +5,7 @@ A Java-based mini-project for managing projects, users, and documents. The syste
 ---
 ## Preview
 Watch the full demo video on Google Drive:  
-[Click here to view the video](https://drive.google.com/file/d/FILE_ID/view?usp=sharing)
+[Click here to view the video](https://drive.google.com/file/d/1KIl21E72Ybs-PK5rdbA-aKwkeDzzueEl/view?usp=drivesdk)
 
 
 ## Features
